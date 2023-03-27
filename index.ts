@@ -47,6 +47,9 @@ const question = (question: string): Promise<string> => {
     })
   );
 };
+/**
+ * メイン
+ */
 const main = async () => {
   while (true) {
     console.log("\n");
