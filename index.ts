@@ -56,7 +56,7 @@ const main = async () => {
     console.log("質問を入力してください（終了する場合は「終了」のみを入力）");
     const input = await prompt("質問を入力：");
     if (input === "終了") break;
-    if (input !== "") await ask(input);
+    if (input !== "") await ask(input, undefined, "assistant");
   }
 };
 
