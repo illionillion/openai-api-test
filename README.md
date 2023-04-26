@@ -1,40 +1,59 @@
-# OpenAI Chatbot
+# OpenAI APIテスト
 
-このプログラムはOpenAI APIを使用した対話型のチャットボットです。ユーザーが入力した質問に対して、OpenAIのモデルを使って回答を生成します。
+このプログラムはOpenAI APIを利用しての対話生成をテストするためのプログラムです。
 
-## セットアップ
+## インストールと実行方法
 
-1. `.env`ファイルを作成し、OpenAI APIキーを設定してください。
+1. このリポジトリをクローンするか、zipファイルとしてダウンロードして解凍してください。
+
+2. コマンドラインでディレクトリ `openai-api-test` に移動し、以下のコマンドを実行してください。
+
+```bash
+npm install
 ```
-OPENAI_API_KEY=<your api key>
+
+3. `.env` ファイルを作成し、以下のようにOpenAIのAPIキーを設定してください。
+
+```
+OPENAI_API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-2. `npm install`コマンドを使って、必要なパッケージをインストールしてください。
+4. 以下のコマンドを実行して、プログラムを起動してください。
 
-## 使い方
+```bash
+npm start
+```
 
-`main`関数を実行すると、ユーザーからの入力を待ちます。ユーザーが「終了」と入力するまで、続けて質問を受け付けます。ユーザーが入力した質問に対して、自動で回答を生成します。
+5. 対話生成のテストを行います。プログラムに質問を入力すると、OpenAI APIが対話の続きを生成して返します。終了する場合は `終了` と入力してください。
 
-### `ask(content: string, model?: string, role?: ChatCompletionRequestMessageRoleEnum)`
+## ファイル構成
 
-OpenAIのAPIを使って質問に対する回答を自動生成します。
+```
+└──openai-api-test
+    ├──README.md
+       ├──index.ts
+       ├──package-lock.json
+       └──package.json
+```
 
-- `content` : ユーザーが入力した質問
-- `model`: 使用するモデルの名前。デフォルトは `"gpt-3.5-turbo-0301"` です。
-- `role`: ボットかアシスタントかを指定します。デフォルトは `"user"` です。
+- `README.md` : このファイルです。
+- `index.ts` : プログラムのメインの実行ファイルです。
+- `package-lock.json` : npmパッケージの依存関係のロックファイルです。
+- `package.json` : npmパッケージの依存関係とスクリプトを定義するファイルです。
 
-### `prompt(msg: string)`
+## 実行の流れ
 
-ユーザーに対して、メッセージを出力し、標準入力から回答を受け取ります。
+OpenAI APIテストの実行の流れ
 
-- `msg`: ユーザーに表示するメッセージ。
+```mermaid
+sequenceDiagram
+  participant User
+  participant Program
+  participant OpenAI
 
-### `question(question: string): Promise<string>`
-
-ユーザーに対して、質問をし、回答を受け取ります。
-
-- `question`: ユーザーに表示する質問。
-
-### `main()`
-
-`main`関数を実行することで、ユーザーからの入力を待ちます。ユーザーが "終了" と入力するまで、質問を受け付け、自動で回答を生成します。
+  User ->> Program: 質問を入力
+  Program ->> OpenAI: 対話を生成
+  OpenAI -->> Program: 対話を返す
+  Program ->> User: 対話を表示
+  User ->> Program: 質問を繰り返す
+```
