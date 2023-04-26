@@ -12,19 +12,24 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+let conversationLog: { role: ChatCompletionRequestMessageRoleEnum; content: string }[] = [];
+
 export const ask = async (
   content: string,
   model = "gpt-3.5-turbo-0301",
   role: ChatCompletionRequestMessageRoleEnum = "user"
 ) => {
+  conversationLog.push({ role, content });
+
   const response = await openai.createChatCompletion({
     model: model,
-    messages: [{ role: role, content: content }],
+    messages: conversationLog,
   });
 
   const answer = response.data.choices[0].message?.content;
   console.log(answer);
 };
+
 /**
  * ユーザーに値を入力させる
  */
@@ -56,7 +61,7 @@ const main = async () => {
     console.log("質問を入力してください（終了する場合は「終了」のみを入力）");
     const input = await prompt("質問を入力：");
     if (input === "終了") break;
-    if (input !== "") await ask(input, undefined, "assistant");
+    if (input !== "") await ask(input, undefined, "user");
   }
 };
 
